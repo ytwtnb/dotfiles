@@ -1,0 +1,12 @@
+[user]
+  name = Yuta Watanabe
+  email = ytwtnb@gmail.com
+[color]
+  ui = auto
+[alias]
+  ch = checkout
+  cm = commit
+  st = status
+  br = branch
+  hi = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+
