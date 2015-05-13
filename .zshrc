@@ -1,175 +1,80 @@
-## Completion configuration
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+ZSH_THEME="kphoen"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git)
+
+# User configuration
+
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export MANPATH="/usr/local/man:$MANPATH"
+
+source $ZSH/oh-my-zsh.sh
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/dsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
 #
-autoload -U compinit
-compinit
-
-## Environment variable configuration
-#
-# LANG
-#
-export LANG=ja_JP.UTF-8
-case ${UID} in
-0)
-    LANG=C
-    ;;
-esac
-
-## Default shell configuration
-#
-# set prompt
-#
-#case ${UID} in
-#0)
-#    PROMPT="%{[31m%}%n%%%{[m%} "
-#    RPROMPT="[%~]"
-#    PROMPT2="%B%{[31m%}%_#%{[m%}%b "
-#    SPROMPT="%B%{[31m%}%r is correct? [n,y,a,e]:%{[m%}%b "
-#    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
-#        PROMPT="%{[37m%}${HOST%%.*} ${PROMPT}"
-#    ;;
-#*)
-#    PROMPT="%{[31m%}%n%%%{[m%} "
-#    RPROMPT="[%~]"
-#    PROMPT2="%{[31m%}%_%%%{[m%} "
-#    SPROMPT="%{[31m%}%r is correct? [n,y,a,e]:%{[m%} "
-#    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
-#        PROMPT="%{[37m%}${HOST%%.*} ${PROMPT}"
-#    ;;
-#esac
-# プロンプト
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' enable git svn
-zstyle ':vcs_info:*' max-exports 6 # formatに入る変数の最大数
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' formats '%b@%r' '%c' '%u'
-zstyle ':vcs_info:git:*' actionformats '%b@%r|%a' '%c' '%u'
-setopt prompt_subst
-function vcs_echo {
-    local st branch color
-    STY= LANG=en_US.UTF-8 vcs_info
-    st=`git status 2> /dev/null`
-    if [[ -z "$st" ]]; then return; fi
-    branch="$vcs_info_msg_0_"
-    if   [[ -n "$vcs_info_msg_1_" ]]; then color=${fg[green]} #staged
-    elif [[ -n "$vcs_info_msg_2_" ]]; then color=${fg[red]} #unstaged
-    elif [[ -n `echo "$st" | grep "^Untracked"` ]]; then color=${fg[blue]} # untracked
-    else color=${fg[cyan]}
-    fi
-    echo "%{$color%}(%{$branch%})%{$reset_color%}" | sed -e s/@/"%F{yellow}@%f%{$color%}"/
-}
-PROMPT='
-%F{yellow}[%~]%f `vcs_echo`
-%(?.$.%F{red}$%f) '
-
-# auto change directory
-#
-setopt auto_cd
-
-# auto directory pushd that you can get dirs list by cd -[tab]
-#
-setopt auto_pushd
-
-# command correct edition before each completion attempt
-#
-setopt correct
-
-## nocorrect
-#
-alias python3='nocorrect python3'
-alias pip3='nocorrect pip3'
-
-# compacked complete list display
-#
-setopt list_packed
-
-# no beep sound when complete list displayed
-#
-setopt nolistbeep
-
-# historical backward/forward search with linehead string binded to ^P/^N
-#
-autoload history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end
-
-## Command history configuration
-#
-HISTFILE=~/.zsh_history
-HISTSIZE=50000
-SAVEHIST=50000
-setopt hist_ignore_dups     # ignore duplication command history list
-setopt share_history        # share command history data
-
-## Alias configuration
-#
-# expand aliases before completing
-#
-setopt complete_aliases # aliased ls needs if file/dir completions work
-
-alias where="command -v"
-alias j="jobs -l"
-
-case "${OSTYPE}" in
-freebsd*|darwin*)
-  alias ls="ls -G -w"
-  ;;
-linux*)
-  alias ls="ls --color"
-  ;;
-esac
-
-alias la="ls -a"
-alias lf="ls -F"
-alias ll="ls -l"
-
-alias du="du -h"
-alias df="df -h"
-
-alias su="su -l"
-
-## terminal configuration
-#
-unset LSCOLORS
-case "${TERM}" in
-xterm)
-  export TERM=xterm-color
-  ;;
-kterm)
-  export TERM=kterm-color
-  # set BackSpace control character
-  stty erase
-  ;;
-cons25)
-  unset LANG
-  export LSCOLORS=ExFxCxdxBxegedabagacad
-  export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-  zstyle ':completion:*' list-colors \
-    'di=;34;1' 'ln=;35;1' 'so=;32;1' 'ex=31;1' 'bd=46;34' 'cd=43;34'
-  ;;
-esac
-
-# set terminal title including current directory
-#
-case "${TERM}" in
-kterm*|xterm*)
-  precmd() {
-    echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
-  }
-  export LSCOLORS=exfxcxdxbxegedabagacad
-  export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-  zstyle ':completion:*' list-colors \
-    'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'cd=43;34'
-  ;;
-esac
-
-## Git
-#
-fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
-
-autoload -U compinit
-compinit -u
-
-
-
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
