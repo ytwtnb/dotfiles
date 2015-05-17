@@ -3,5 +3,6 @@ dotfiles
 
 ```bash
 $ git clone https://github.com/ytwtnb/dotfiles.git
-$ sh ~/dotfiles/setup.sh
+$ cd dotfiles/
+$ sh setup.sh
 ```
